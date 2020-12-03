@@ -11,6 +11,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"time"
 
 	opLogging "github.com/op/go-logging"
 )
@@ -169,7 +170,8 @@ func messageFormat(environment string, serviceName string, logID string,
 		bufferText.WriteString(fmt.Sprintf("%s", text))
 	}
 
-	message := fmt.Sprintf("[" + environment + "] [" + serviceName + "] [" + logID + "]"+
+	date := time.Now().Format("2006-01-02 15:04:05")
+	message := fmt.Sprintf("[" + date + "] [" + serviceName + " " + date + "] [" + logID + "] " +
 		messageType + " " + stringFormat + " " + bufferText.String())
 	return message
 
