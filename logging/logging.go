@@ -171,7 +171,7 @@ func messageFormat(environment string, serviceName string, logID string,
 	}
 
 	date := time.Now().Format("2006-01-02 15:04:05")
-	message := fmt.Sprintf("[" + date + "] [" + serviceName + " " + date + "] [" + logID + "] " +
+	message := fmt.Sprintf("[" + date + "] [" + serviceName + " " + environment + "] [" + logID + "] " +
 		messageType + " " + stringFormat + " " + bufferText.String())
 	return message
 
