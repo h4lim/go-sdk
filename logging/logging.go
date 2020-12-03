@@ -61,7 +61,7 @@ func (ppl *GoSDK) Infof(logID string, stringFormat string, args ...interface{}) 
 
 func (ppl *GoSDK) Error(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "ERROR", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -70,7 +70,7 @@ func (ppl *GoSDK) Error(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Errorf(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "ERROR", args))
 	}
 	ppl.Logger.Errorf("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
@@ -78,7 +78,7 @@ func (ppl *GoSDK) Errorf(logID string, stringFormat string, args ...interface{})
 
 func (ppl *GoSDK) Critical(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "CRITICAL", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -87,7 +87,7 @@ func (ppl *GoSDK) Critical(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Criticalf(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "CRITICAL", args))
 	}
 	ppl.Logger.Criticalf("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
@@ -95,7 +95,7 @@ func (ppl *GoSDK) Criticalf(logID string, stringFormat string, args ...interface
 
 func (ppl *GoSDK) Fatal(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "FATAL", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -104,7 +104,7 @@ func (ppl *GoSDK) Fatal(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Fatalf(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "FATAL", args))
 	}
 	ppl.Logger.Fatalf("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
@@ -112,7 +112,7 @@ func (ppl *GoSDK) Fatalf(logID string, stringFormat string, args ...interface{})
 
 func (ppl *GoSDK) Panic(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "PANIC", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -121,7 +121,7 @@ func (ppl *GoSDK) Panic(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Panicf(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "PANIC", args))
 	}
 	ppl.Logger.Panicf("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
@@ -129,7 +129,7 @@ func (ppl *GoSDK) Panicf(logID string, stringFormat string, args ...interface{})
 
 func (ppl *GoSDK) Warning(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "WARNING", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -138,7 +138,7 @@ func (ppl *GoSDK) Warning(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Warningf(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "WARNING", args))
 	}
 	ppl.Logger.Warningf("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
@@ -146,7 +146,7 @@ func (ppl *GoSDK) Warningf(logID string, stringFormat string, args ...interface{
 
 func (ppl *GoSDK) Notice(logID string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			"", "NOTICE", args))
 	}
 	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
@@ -155,20 +155,22 @@ func (ppl *GoSDK) Notice(logID string, args ...interface{}) {
 
 func (ppl *GoSDK) Noticef(logID string, stringFormat string, args ...interface{}) {
 	if GlobalLogMessage != nil {
-		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName,
+		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "NOTICE", args))
 	}
 	ppl.Logger.Noticef("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
 }
 
-func messageFormat(environment string, logID string, stringFormat string, messageType string, args ...interface{}) string {
+func messageFormat(environment string, serviceName string, logID string,
+	stringFormat string, messageType string, args ...interface{}) string {
 
 	var bufferText bytes.Buffer
 	for _, text := range args {
 		bufferText.WriteString(fmt.Sprintf("%s", text))
 	}
 
-	message := fmt.Sprintf("[" + environment + "] [" + logID + "]" +
-		stringFormat + " " + messageType + " " + bufferText.String())
+	message := fmt.Sprintf("[" + environment + "] [" + serviceName + "] [" + logID + "] [" +
+		messageType + " " + stringFormat + " " + bufferText.String())
 	return message
+
 }
