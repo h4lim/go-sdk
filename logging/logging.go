@@ -169,7 +169,7 @@ func messageFormat(environment string, serviceName string, logID string,
 		bufferText.WriteString(fmt.Sprintf("%s", text))
 	}
 
-	message := fmt.Sprintf("[" + environment + "] [" + serviceName + "] [" + logID + "] [" +
+	message := fmt.Sprintf("[" + environment + "] [" + serviceName + "] [" + logID + "]"+
 		messageType + " " + stringFormat + " " + bufferText.String())
 	return message
 
