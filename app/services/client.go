@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/h4lim/go-sdk/logging"
+	"github.com/h4lim/go-sdk/utils"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -103,6 +104,9 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 		HttpCode:     response.StatusCode,
 		ByteResponse: byteResult,
 	}
+
+	utils.CountClientApi(*c, clientResponse)
+
 	return &clientResponse, nil
 }
 
@@ -136,6 +140,9 @@ func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) 
 						HttpCode:     response.StatusCode,
 						ByteResponse: byteResult,
 					}
+
+					utils.CountClientApi(*c, clientResponse)
+
 					log.Warning(c.UniqueID, "No retry from client")
 					return &clientResponse, nil
 				}
