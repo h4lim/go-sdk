@@ -7,6 +7,7 @@ import (
 type LogApi struct {
 	gorm.Model
 
+	LogID        string `db:"log_id"`
 	Environment  string `db:"environment"`
 	ClientName   string `db:"client_name"`
 	Url          string `db:"url"`

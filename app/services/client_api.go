@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/h4lim/go-sdk/app/models"
 	"github.com/h4lim/go-sdk/utils"
-	"github.com/jinzhu/gorm"
 	"net/http"
 )
 
@@ -32,7 +31,7 @@ func setClientApiModel(clientParty ClientParty, request http.Request, clientResp
 	}
 
 	models := models.LogApi{
-		Model:        gorm.Model{},
+		LogID:        clientParty.UniqueID,
 		Environment:  utils.GetRunMode(),
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
