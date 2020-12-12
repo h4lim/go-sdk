@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"github.com/h4lim/go-sdk/app/models"
 	"github.com/h4lim/go-sdk/utils"
+	"github.com/jinzhu/gorm"
+	"net/http"
 )
 
-func CountClientApi(clientParty ClientParty, clientResponse ClientResponse) {
-	go insertClientApi(setClientApiModel(clientParty, clientResponse))
+func CountClientApi(clientParty ClientParty, request http.Request, clientResponse ClientResponse) {
+	go insertClientApi(setClientApiModel(clientParty, request, clientResponse))
 }
 
-func insertClientApi(data models.ClientApi) {
+func insertClientApi(data models.LogApi) {
 
 	db, err := utils.DBModel.DBOpen()
 	defer db.Close()
@@ -22,13 +24,21 @@ func insertClientApi(data models.ClientApi) {
 	db.Create(&data)
 }
 
-func setClientApiModel(clientParty ClientParty, clientResponse ClientResponse) models.ClientApi {
+func setClientApiModel(clientParty ClientParty, request http.Request, clientResponse ClientResponse) models.LogApi {
 
-	models := models.ClientApi{
+	requestBody := ""
+	if request.Body != nil {
+		requestBody = fmt.Sprintf("%s", request.Body)
+	}
+
+	models := models.LogApi{
+		Model:        gorm.Model{},
 		Environment:  utils.GetRunMode(),
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
-		RequestBody:  clientParty.RequestBody,
+		Method:       request.Method,
+		Header:       fmt.Sprintf("%s", request.Header),
+		RequestBody:  requestBody,
 		ResponseBody: string(clientResponse.ByteResponse),
 		HttpCode:     clientResponse.HttpCode,
 	}

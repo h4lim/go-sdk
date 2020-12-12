@@ -41,7 +41,7 @@ type DBModel struct {
 
 func migration(db *gorm.DB) {
 
-	db.AutoMigrate(&models.ClientApi{})
+	db.AutoMigrate(&models.LogApi{})
 
 }
 
