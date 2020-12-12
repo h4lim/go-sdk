@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/h4lim/go-sdk/app/models"
 	"os"
 
 	"github.com/h4lim/go-sdk/logging"
@@ -36,6 +37,12 @@ type DBModel struct {
 	Name       string
 	Username   string
 	Password   string
+}
+
+func Migration(db *gorm.DB) {
+
+	db.AutoMigrate(&models.ClientApi{})
+
 }
 
 func (c *DBModel) InitDB() (*gorm.DB, *error) {
