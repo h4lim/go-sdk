@@ -12,8 +12,8 @@ type LogApi struct {
 	ClientName   string `db:"client_name"`
 	Url          string `db:"url"`
 	Method       string `db:"method"`
-	Header       string `db:"header"`
-	RequestBody  string `db:"request_body"`
-	ResponseBody string `db:"response_body"`
+	Header       string `gorm:"size:5000000"`
+	RequestBody  string `gorm:"size:5000000"`
+	ResponseBody string `gorm:"size:5000000"`
 	HttpCode     int    `db:"status"`
 }
