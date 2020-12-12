@@ -1,18 +1,18 @@
-package utils
+package services
 
 import (
 	"fmt"
 	"github.com/h4lim/go-sdk/app/models"
-	"github.com/h4lim/go-sdk/app/services"
+	"github.com/h4lim/go-sdk/utils"
 )
 
-func CountClientApi(clientParty services.ClientParty, clientResponse services.ClientResponse) {
+func CountClientApi(clientParty ClientParty, clientResponse ClientResponse) {
 	go insertClientApi(setClientApiModel(clientParty, clientResponse))
 }
 
 func insertClientApi(data models.ClientApi) {
 
-	db, err := DBModel.DBOpen()
+	db, err := utils.DBModel.DBOpen()
 	defer db.Close()
 
 	if err != nil {
@@ -22,10 +22,10 @@ func insertClientApi(data models.ClientApi) {
 	db.Create(&data)
 }
 
-func setClientApiModel(clientParty services.ClientParty, clientResponse services.ClientResponse) models.ClientApi {
+func setClientApiModel(clientParty ClientParty, clientResponse ClientResponse) models.ClientApi {
 
 	models := models.ClientApi{
-		Environment:  GetRunMode(),
+		Environment:  utils.GetRunMode(),
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
 		RequestBody:  clientParty.RequestBody,
