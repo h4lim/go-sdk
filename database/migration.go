@@ -39,7 +39,7 @@ type DBModel struct {
 	Password   string
 }
 
-func Migration(db *gorm.DB) {
+func migration(db *gorm.DB) {
 
 	db.AutoMigrate(&models.ClientApi{})
 
@@ -47,6 +47,7 @@ func Migration(db *gorm.DB) {
 
 func (c *DBModel) InitDB() (*gorm.DB, *error) {
 	db, err := dBOpen(c)
+	migration(db)
 	if err != nil {
 		log.Errorf(INTERNAL, "Error When Open DB %s ", err)
 		return nil, err
