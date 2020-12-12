@@ -10,9 +10,6 @@ package logging
 import (
 	"bytes"
 	"fmt"
-	"github.com/h4lim/go-sdk/app/helpers"
-	"github.com/h4lim/go-sdk/app/repositories"
-	"github.com/h4lim/go-sdk/app/services"
 	"os"
 	"strings"
 	"time"
@@ -163,32 +160,6 @@ func (ppl *GoSDK) Noticef(logID string, stringFormat string, args ...interface{}
 		GlobalLogMessage.SendMessage(messageFormat(GlobalLogMessage.Environment, GlobalLogMessage.ServiceName, logID,
 			stringFormat, "NOTICE", args))
 	}
-	ppl.Logger.Noticef("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
-}
-
-func (ppl *GoSDK) Success(logID string, clientParty services.ClientParty,
-	clientResponse services.ClientResponse, args ...interface{}) {
-	go repositories.InsertClientApi(helpers.SetClientApiModel(clientParty, clientResponse))
-	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
-	ppl.Logger.Notice("notice", args)
-}
-
-func (ppl *GoSDK) Successf(logID string, stringFormat string,
-	clientParty services.ClientParty, clientResponse services.ClientResponse, args ...interface{}) {
-	go repositories.InsertClientApi(helpers.SetClientApiModel(clientParty, clientResponse))
-	ppl.Logger.Noticef("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
-}
-
-func (ppl *GoSDK) Failed(logID string,
-	clientParty services.ClientParty, clientResponse services.ClientResponse, args ...interface{}) {
-	go repositories.InsertClientApi(helpers.SetClientApiModel(clientParty, clientResponse))
-	args = append([]interface{}{"[" + ppl.Hostname + "] [" + logID + "]"}, args...)
-	ppl.Logger.Notice("notice", args)
-}
-
-func (ppl *GoSDK) Failedf(logID string, stringFormat string,
-	clientParty services.ClientParty, clientResponse services.ClientResponse, args ...interface{}) {
-	go repositories.InsertClientApi(helpers.SetClientApiModel(clientParty, clientResponse))
 	ppl.Logger.Noticef("["+ppl.Hostname+"] ["+logID+"] "+stringFormat, args...)
 }
 
