@@ -27,7 +27,7 @@ func setClientApiModel(clientParty ClientParty, request http.Request, clientResp
 
 	requestBody := ""
 	if request.Body != nil {
-		requestBody = fmt.Sprintf("%s", request.Body)
+		requestBody = fmt.Sprintf("%v", request.Body)
 	}
 
 	models := models.LogApi{
@@ -36,7 +36,7 @@ func setClientApiModel(clientParty ClientParty, request http.Request, clientResp
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
 		Method:       request.Method,
-		Header:       fmt.Sprintf("%s", request.Header),
+		Header:       fmt.Sprintf("%v", request.Header),
 		RequestBody:  requestBody,
 		ResponseBody: string(clientResponse.ByteResponse),
 		HttpCode:     clientResponse.HttpCode,
