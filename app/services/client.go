@@ -30,6 +30,7 @@ type ClientParty struct {
 	HttpClient  http.Client
 	Headers     []map[string]string
 	RequestBody io.Reader
+	LogApi      bool
 	ClientRetry *ClientRetry
 }
 
@@ -104,7 +105,9 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 		ByteResponse: byteResult,
 	}
 
-	CountClientApi(*c, *request, clientResponse)
+	if c.LogApi {
+		CountClientApi(*c, *request, clientResponse)
+	}
 
 	return &clientResponse, nil
 }
@@ -140,7 +143,9 @@ func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) 
 						ByteResponse: byteResult,
 					}
 
-					CountClientApi(*c, *request, clientResponse)
+					if c.LogApi {
+						CountClientApi(*c, *request, clientResponse)
+					}
 
 					log.Warning(c.UniqueID, "No retry from client")
 					return &clientResponse, nil
