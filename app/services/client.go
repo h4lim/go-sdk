@@ -147,12 +147,12 @@ func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) 
 						CountClientApi(*c, *request, clientResponse)
 					}
 
-					log.Warning(c.UniqueID, "No retry from client")
+					log.Debugf(c.UniqueID, "No retry from client")
 					return &clientResponse, nil
 				}
 
-				log.Warning(c.UniqueID, "Retry occurred when http code and message, retry for ", key, value, i+1)
-				log.Warning(c.UniqueID, "Interval - ", interval)
+				log.Warningf(c.UniqueID, "Retry occurred when http code and message, retry for ", key, value, i+1)
+				log.Warningf(c.UniqueID, "Interval - ", interval)
 				printClientResponse(c.Debug, c.UniqueID, response.StatusCode, c.ClientName, string(byteResult))
 				if c.ClientRetry.Interval == INTERVAL_MINUTE {
 					time.Sleep(interval * time.Minute)
@@ -165,7 +165,7 @@ func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) 
 
 	}
 
-	log.Warning(c.UniqueID, "Retry finished ")
+	log.Debugf(c.UniqueID, "Retry finished")
 
 	return nil, nil
 }
