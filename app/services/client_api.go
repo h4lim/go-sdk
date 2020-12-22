@@ -7,8 +7,8 @@ import (
 	"net/http"
 )
 
-func CountClientApi(clientParty ClientParty, request http.Request, clientResponse ClientResponse) {
-	go insertClientApi(setClientApiModel(clientParty, request, clientResponse))
+func CountClientApi(clientParty ClientParty, request http.Request, requestBody string, clientResponse ClientResponse) {
+	go insertClientApi(setClientApiModel(clientParty, request, requestBody, clientResponse))
 }
 
 func insertClientApi(data models.LogApi) {
@@ -23,16 +23,16 @@ func insertClientApi(data models.LogApi) {
 	db.Create(&data)
 }
 
-func setClientApiModel(clientParty ClientParty, request http.Request, clientResponse ClientResponse) models.LogApi {
+func setClientApiModel(clientParty ClientParty, request http.Request, requestBody string, clientResponse ClientResponse) models.LogApi {
 
 	models := models.LogApi{
 		LogID:        clientParty.UniqueID,
-		Environment:  utils.GetRunMode(),
+		Environment:  "Dev",
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
 		Method:       request.Method,
 		Header:       fmt.Sprintf("%v", request.Header),
-		RequestBody:  fmt.Sprintf("%v", clientParty.RequestBody),
+		RequestBody:  requestBody,
 		ResponseBody: string(clientResponse.ByteResponse),
 		HttpCode:     clientResponse.HttpCode,
 	}

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"github.com/h4lim/go-sdk/logging"
 	"io"
 	"io/ioutil"
@@ -55,6 +56,8 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 		return nil, &err
 	}
 
+	requestBody := fmt.Sprintf("%v", c.RequestBody)
+
 	for _, element := range c.Headers {
 		for key, value := range element {
 			if strings.ToLower(key) == "baseauth" {
@@ -78,7 +81,7 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 	}
 
 	if c.ClientRetry != nil {
-		clientResponse, err := httpRetry(c, request)
+		clientResponse, err := httpRetry(c, request, requestBody)
 		if err != nil {
 			return nil, err
 		}
@@ -106,13 +109,13 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 	}
 
 	if c.LogApi {
-		CountClientApi(*c, *request, clientResponse)
+		CountClientApi(*c, *request, requestBody, clientResponse)
 	}
 
 	return &clientResponse, nil
 }
 
-func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) {
+func httpRetry(c *ClientParty, request *http.Request, requestBody string) (*ClientResponse, *error) {
 
 	var response *http.Response
 	var errResponse error
@@ -144,7 +147,7 @@ func httpRetry(c *ClientParty, request *http.Request) (*ClientResponse, *error) 
 					}
 
 					if c.LogApi {
-						CountClientApi(*c, *request, clientResponse)
+						CountClientApi(*c, *request, requestBody, clientResponse)
 					}
 
 					log.Debugf(c.UniqueID, "No retry from client")
