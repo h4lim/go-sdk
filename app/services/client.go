@@ -32,7 +32,15 @@ type ClientParty struct {
 	Headers     []map[string]string
 	RequestBody io.Reader
 	LogApi      bool
+	HiddenLog   *HiddenLog
 	ClientRetry *ClientRetry
+}
+
+type HiddenLog struct {
+	Url          bool
+	Header       bool
+	RequestBody  bool
+	ResponseBody bool
 }
 
 type ClientRetry struct {

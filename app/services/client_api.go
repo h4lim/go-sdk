@@ -25,15 +25,34 @@ func insertClientApi(data models.LogApi) {
 
 func setClientApiModel(clientParty ClientParty, request http.Request, requestBody string, clientResponse ClientResponse) models.LogApi {
 
+	url := clientParty.UrlApi.String()
+	if clientParty.HiddenLog.Url {
+		url = ""
+	}
+
+	header := fmt.Sprintf("%v", request.Header)
+	if clientParty.HiddenLog.Header {
+		header = ""
+	}
+
+	if clientParty.HiddenLog.RequestBody {
+		requestBody = ""
+	}
+
+	responseBody := string(clientResponse.ByteResponse)
+	if clientParty.HiddenLog.ResponseBody {
+		responseBody = ""
+	}
+
 	models := models.LogApi{
 		LogID:        clientParty.UniqueID,
-		Environment:  "Dev",
+		Environment:  utils.GetRunMode(),
 		ClientName:   clientParty.ClientName,
-		Url:          clientParty.UrlApi.String(),
+		Url:          url,
 		Method:       request.Method,
-		Header:       fmt.Sprintf("%v", request.Header),
+		Header:       header,
 		RequestBody:  requestBody,
-		ResponseBody: string(clientResponse.ByteResponse),
+		ResponseBody: responseBody,
 		HttpCode:     clientResponse.HttpCode,
 	}
 
