@@ -80,17 +80,27 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 	if c.Debug {
 		log.Debugf(c.UniqueID, "===================================================== HIT "+strings.ToUpper(c.ClientName)+" API =======================================================")
 		log.Debugf(c.UniqueID, "HTTP METHOD %s ", request.Method)
-		if !c.HiddenLog.Url {
+
+		if c.HiddenLog == nil {
 			log.Debugf(c.UniqueID, "URL %s ", request.URL)
-		}
-		if !c.HiddenLog.Header {
 			log.Debugf(c.UniqueID, "HEADER %s ", request.Header)
-		}
-		if request.Body != nil {
-			if !c.HiddenLog.ResponseBody {
+			if request.Body != nil {
 				log.Debugf(c.UniqueID, "BODY %s ", request.Body)
 			}
+		} else {
+			if !c.HiddenLog.Url {
+				log.Debugf(c.UniqueID, "URL %s ", request.URL)
+			}
+			if !c.HiddenLog.Header {
+				log.Debugf(c.UniqueID, "HEADER %s ", request.Header)
+			}
+			if request.Body != nil {
+				if !c.HiddenLog.ResponseBody {
+					log.Debugf(c.UniqueID, "BODY %s ", request.Body)
+				}
+			}
 		}
+
 		log.Debugf(c.UniqueID, "==========================================================================================================================")
 	}
 
