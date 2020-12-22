@@ -1,7 +1,6 @@
 package services
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/h4lim/go-sdk/app/models"
 	"github.com/h4lim/go-sdk/utils"
@@ -26,22 +25,14 @@ func insertClientApi(data models.LogApi) {
 
 func setClientApiModel(clientParty ClientParty, request http.Request, clientResponse ClientResponse) models.LogApi {
 
-	header := fmt.Sprintf("%v", request.Header)
-	requestBody := ""
-	if request.Body != nil {
-		bufferRequestBody := new(bytes.Buffer)
-		bufferRequestBody.ReadFrom(request.Body)
-		requestBody = bufferRequestBody.String()
-	}
-
 	models := models.LogApi{
 		LogID:        clientParty.UniqueID,
 		Environment:  utils.GetRunMode(),
 		ClientName:   clientParty.ClientName,
 		Url:          clientParty.UrlApi.String(),
 		Method:       request.Method,
-		Header:       header,
-		RequestBody:  requestBody,
+		Header:       fmt.Sprintf("%v", request.Header),
+		RequestBody:  fmt.Sprintf("%v", clientParty.RequestBody),
 		ResponseBody: string(clientResponse.ByteResponse),
 		HttpCode:     clientResponse.HttpCode,
 	}
