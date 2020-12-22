@@ -80,10 +80,16 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 	if c.Debug {
 		log.Debugf(c.UniqueID, "===================================================== HIT "+strings.ToUpper(c.ClientName)+" API =======================================================")
 		log.Debugf(c.UniqueID, "HTTP METHOD %s ", request.Method)
-		log.Debugf(c.UniqueID, "URL %s ", request.URL)
-		log.Debugf(c.UniqueID, "HEADER %s ", request.Header)
+		if !c.HiddenLog.Url {
+			log.Debugf(c.UniqueID, "URL %s ", request.URL)
+		}
+		if !c.HiddenLog.Header {
+			log.Debugf(c.UniqueID, "HEADER %s ", request.Header)
+		}
 		if request.Body != nil {
-			log.Debugf(c.UniqueID, "BODY %s ", request.Body)
+			if !c.HiddenLog.ResponseBody {
+				log.Debugf(c.UniqueID, "BODY %s ", request.Body)
+			}
 		}
 		log.Debugf(c.UniqueID, "==========================================================================================================================")
 	}
@@ -109,7 +115,7 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 		log.Errorf(c.UniqueID, "Error occurred %s ", err.Error())
 		return nil, &err
 	}
-	printClientResponse(c.Debug, c.UniqueID, response.StatusCode, c.ClientName, string(byteResult))
+	printClientResponse(c, response.StatusCode, string(byteResult))
 
 	clientResponse := ClientResponse{
 		HttpCode:     response.StatusCode,
@@ -148,7 +154,7 @@ func httpRetry(c *ClientParty, request *http.Request, requestBody string) (*Clie
 				}
 
 				if response.StatusCode != key {
-					printClientResponse(c.Debug, c.UniqueID, response.StatusCode, c.ClientName, string(byteResult))
+					printClientResponse(c, response.StatusCode, string(byteResult))
 					clientResponse := ClientResponse{
 						HttpCode:     response.StatusCode,
 						ByteResponse: byteResult,
@@ -164,7 +170,7 @@ func httpRetry(c *ClientParty, request *http.Request, requestBody string) (*Clie
 
 				log.Warningf(c.UniqueID, "Retry occurred when http code and message, retry for ", key, value, i+1)
 				log.Warningf(c.UniqueID, "Interval - ", interval)
-				printClientResponse(c.Debug, c.UniqueID, response.StatusCode, c.ClientName, string(byteResult))
+				printClientResponse(c, response.StatusCode, string(byteResult))
 				if c.ClientRetry.Interval == INTERVAL_MINUTE {
 					time.Sleep(interval * time.Minute)
 				} else {
@@ -181,11 +187,11 @@ func httpRetry(c *ClientParty, request *http.Request, requestBody string) (*Clie
 	return nil, nil
 }
 
-func printClientResponse(debug bool, uniqueID string, responseCode int, clientName string, strResult string) {
-	if debug {
-		log.Debugf(uniqueID, "================================================ RESPONSE "+strings.ToUpper(clientName)+" API ================================================")
-		log.Debugf(uniqueID, "GET HTTP RESPONSE CODE ", responseCode)
-		log.Debugf(uniqueID, "GET RESPONSE FROM "+strings.ToUpper(clientName)+" API %s", strResult)
-		log.Debugf(uniqueID, "======================================================================================================================")
+func printClientResponse(c *ClientParty, httpCode int, responseBody string) {
+	if c.Debug {
+		log.Debugf(c.UniqueID, "================================================ RESPONSE "+strings.ToUpper(c.ClientName)+" API ================================================")
+		log.Debugf(c.UniqueID, "GET HTTP CODE ", httpCode)
+		log.Debugf(c.UniqueID, "GET RESPONSE FROM "+strings.ToUpper(c.ClientName)+" API %s", responseBody)
+		log.Debugf(c.UniqueID, "======================================================================================================================")
 	}
 }
