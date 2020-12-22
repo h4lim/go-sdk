@@ -26,22 +26,25 @@ func insertClientApi(data models.LogApi) {
 func setClientApiModel(clientParty ClientParty, request http.Request, requestBody string, clientResponse ClientResponse) models.LogApi {
 
 	url := clientParty.UrlApi.String()
-	if clientParty.HiddenLog.Url {
-		url = ""
-	}
-
 	header := fmt.Sprintf("%v", request.Header)
-	if clientParty.HiddenLog.Header {
-		header = ""
-	}
-
-	if clientParty.HiddenLog.RequestBody {
-		requestBody = ""
-	}
-
 	responseBody := string(clientResponse.ByteResponse)
-	if clientParty.HiddenLog.ResponseBody {
-		responseBody = ""
+
+	if clientParty.HiddenLog != nil {
+		if clientParty.HiddenLog.Url {
+			url = ""
+		}
+
+		if clientParty.HiddenLog.Header {
+			header = ""
+		}
+
+		if clientParty.HiddenLog.RequestBody {
+			requestBody = ""
+		}
+
+		if clientParty.HiddenLog.ResponseBody {
+			responseBody = ""
+		}
 	}
 
 	models := models.LogApi{
