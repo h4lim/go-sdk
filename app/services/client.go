@@ -95,7 +95,7 @@ func (c *ClientParty) HitClient() (*ClientResponse, *error) {
 				log.Debugf(c.UniqueID, "HEADER %s ", request.Header)
 			}
 			if request.Body != nil {
-				if !c.HiddenLog.ResponseBody {
+				if !c.HiddenLog.RequestBody {
 					log.Debugf(c.UniqueID, "BODY %s ", request.Body)
 				}
 			}
@@ -201,7 +201,15 @@ func printClientResponse(c *ClientParty, httpCode int, responseBody string) {
 	if c.Debug {
 		log.Debugf(c.UniqueID, "================================================ RESPONSE "+strings.ToUpper(c.ClientName)+" API ================================================")
 		log.Debugf(c.UniqueID, "GET HTTP CODE ", httpCode)
-		log.Debugf(c.UniqueID, "GET RESPONSE FROM "+strings.ToUpper(c.ClientName)+" API %s", responseBody)
-		log.Debugf(c.UniqueID, "======================================================================================================================")
+		if c.HiddenLog == nil {
+			log.Debugf(c.UniqueID, "GET RESPONSE FROM "+strings.ToUpper(c.ClientName)+" API %s", responseBody)
+			log.Debugf(c.UniqueID, "======================================================================================================================")
+		} else {
+			if !c.HiddenLog.ResponseBody {
+				log.Debugf(c.UniqueID, "GET RESPONSE FROM "+strings.ToUpper(c.ClientName)+" API %s", responseBody)
+				log.Debugf(c.UniqueID, "======================================================================================================================")
+			}
+		}
+
 	}
 }
