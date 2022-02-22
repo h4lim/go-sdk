@@ -7,7 +7,7 @@ import (
 )
 
 func JsonToString(uniqueID string, param interface{}) string {
-	result, err := json.MarshalIndent(&param, "", "\t")
+	result, err := json.Marshal(&param)
 	if err != nil {
 		log.Fatalf(uniqueID, "Error occurred ", err.Error())
 		return ""
@@ -18,7 +18,7 @@ func JsonToString(uniqueID string, param interface{}) string {
 }
 
 func XmlToString(uniqueID string, param interface{}) string {
-	result, err := xml.MarshalIndent(&param, "", "\t")
+	result, err := xml.Marshal(&param)
 	if err != nil {
 		log.Errorf(uniqueID, "Error occurred ", err.Error())
 		return ""
